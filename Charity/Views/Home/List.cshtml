@@ -16,7 +16,7 @@
                 }
                 else if (ModelList.Count == 4)
                 {
-                    <div class="row carousel-holder" data-interval="2000" style="height: 60px;width:100%">
+                    <div class="container carousel-holder" data-interval="2000" style="margin-left:0px;width:120%;">
                         <div class="col-md-12">
                             <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
                                 <ol class="carousel-indicators">
@@ -32,21 +32,21 @@
                                         {
                                             if (i == 0)
                                             {
-                                                                        <div class="item active">
-                                                                            <a href="@Url.Action("Details", "Home", new { id = @ModelList[i].BlogId })">
-                                                                                <img title="@ModelList[i].Title" class="slide-image" src="~/Images/@ModelList[i].Picture" alt="@ModelList[i].Title" style="height:450px;width:120%" />
-                                                                            </a>
-                                                                            <div class="carousel-caption">
-                                                                             <h3 style="color:#fff;">@ModelList[i].Intro</h3>
-                                                                         </div>
-                                                                        </div>
+                                            <div class="item active">
+                                                <a href="@Url.Action("Details", "Home", new { id = @ModelList[i].BlogId })">
+                                                    <img title="@ModelList[i].Title" class="slide-image" src="~/Images/@ModelList[i].Picture" alt="@ModelList[i].Title" style="height:450px;width:1500px;" />
+                                                </a>
+                                                <div class="carousel-caption">
+                                                    <h3 style="color:#fff;">@ModelList[i].Intro</h3>
+                                                </div>
+                                            </div>
 
                                             }
                                             else
                                             {
                                 <div class="item">
                                     <a href="@Url.Action("Details", "Home", new { id = @ModelList[i].BlogId })">
-                                        <img title="@ModelList[i].Title" class="slide-image" src="~/Images/@ModelList[i].Picture" alt="@ModelList[i].Title" style="height:450px;width:1200px;" />
+                                        <img title="@ModelList[i].Title" class="slide-image" src="~/Images/@ModelList[i].Picture" alt="@ModelList[i].Title" style="height:450px;width:1500px;" />
                                     </a>
                                     <div class="carousel-caption">
                                         <h3 style="color:#fff;">@ModelList[i].Intro</h3>
@@ -56,7 +56,7 @@
                                         }
                                     }
                                 </div>
-                                <a class="left carousel-control" href="#carousel-example-generic" data-slide="prev">
+                                <a class="left carousel carousel-control" href="#carousel-example-generic" data-slide="prev">
                                     <span class="glyphicon glyphicon-chevron-left"></span>
                                 </a>
                                 <a class="right carousel-control" href="#carousel-example-generic" data-slide="next">
