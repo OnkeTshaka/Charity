@@ -1,0 +1,196 @@
+﻿@model Charity.Models.Delivery
+
+@{
+    ViewBag.Title = "Create";
+}
+
+
+
+@using (Html.BeginForm("Create", "Deliveries", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+    <div class="btn-group pull-right" style="margin-top:30px;">
+        <input type="submit" value="Submit" class="btn btn-success" />
+        <a href="@Url.Action("Index", "Deliveries")" class="btn btn-primary">Back</a>
+
+    </div>
+    <div class="form-horizontal">
+        <h2>Delivery of Goods</h2>
+
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+            @Html.LabelFor(model => model.OrganisationId, "Donation Group Name", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("OrganisationId", null, htmlAttributes: new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.OrganisationId, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Address, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10" style="color:#111;">
+                @Html.TextBoxFor(m => m.Address, new { id = "travelfrom", type = "text", name = "name", @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.Address, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Clothes, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Clothes, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Clothes, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Food, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Food, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Food, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.TotalQTY, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.TotalQTY, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.TotalQTY, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-6">
+
+                @Html.LabelFor(model => model.image, htmlAttributes: new { @class = "control-label col-md-4 " })
+
+                <div class="input-group">
+                    <div class="input-group-addon">
+                        <i class="fa fa-file-picture-o"></i>
+                    </div>
+                    <input type="file" name="img_upload"
+                           accept=".jpeg,.jpg,.png" onchange="readURL(this);" class="form-control"
+                           required="required" />
+                </div>
+                <br />
+                <br />
+                @Html.ValidationMessageFor(model => model.image, "", new
+                {
+                    @class =
+               "text-danger"
+                })
+            </div>
+        </div>
+
+        @*<div class="form-group">
+                @Html.LabelFor(model => model.status, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.status, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.status, "", new { @class = "text-danger" })
+                </div>
+            </div>*@
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Create" class="btn btn-default" />
+                <div id="dvMap" style="min-height:1px;width:1px;"></div>
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+<div class="col-md-6">
+    <div class="col-md-6">
+        <img id="image_preview" src="#" alt="" />
+    </div>
+    <script type="text/javascript">
+        //image preview
+        function readURL(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    $('#image_preview')
+                        .attr('src', e.target.result)
+                        .width(400)
+                        .height(400);
+                };
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+    </script>
+</div>
+
+@section Scripts {
+    <script src="https://maps.googleapis.com/maps/api/js?libraries=places&key=AIzaSyBYttF7QzFTT7iNnEjSNifWl0mVX_ahIQ4" type="text/javascript"></script>
+
+    <!-- code for example 1 -->
+    <script>
+
+        var source, destination;
+        var directionsDisplay;
+        var directionsService = new google.maps.DirectionsService();
+
+        // initialise the location of the map on Chichester in England (ref lat and lng)
+        var map = new google.maps.Map(document.getElementById('dvMap'), {
+            center: { lat: -29.856349, lng: 31.003004 },
+            zoom: 13,
+            mapTypeId: 'roadmap'
+        });
+
+        google.maps.event.addDomListener(window, 'load', function () {
+            new google.maps.places.SearchBox(document.getElementById('travelfrom'));
+            new google.maps.places.SearchBox(document.getElementById('travelto'));
+            directionsDisplay = new google.maps.DirectionsRenderer({ 'draggable': true });
+        });
+
+        function GetRoute() {
+
+            directionsDisplay.setMap(map);
+
+            source = document.getElementById("travelfrom").value;
+            destination = document.getElementById("travelto").value;
+
+            var request = {
+                origin: source,
+                destination: destination,
+                travelMode: google.maps.TravelMode.DRIVING
+            };
+
+            directionsService.route(request, function (response, status) {
+                if (status == google.maps.DirectionsStatus.OK) {
+                    directionsDisplay.setDirections(response);
+                }
+            });
+
+            //*********DISTANCE AND DURATION**********************//
+            var service = new google.maps.DistanceMatrixService();
+            service.getDistanceMatrix({
+                origins: [source],
+                destinations: [destination],
+                travelMode: google.maps.TravelMode.DRIVING,
+                unitSystem: google.maps.UnitSystem.METRIC,
+                avoidHighways: false,
+                avoidTolls: false
+            }, function (response, status) {
+
+                if (status == google.maps.DistanceMatrixStatus.OK && response.rows[0].elements[0].status != "ZERO_RESULTS") {
+                    var distance = response.rows[0].elements[0].distance.text;
+                    var duration = response.rows[0].elements[0].duration.value;
+                    var dvDistance = document.getElementById("dvDistance");
+                    duration = parseFloat(duration / 60).toFixed(2);
+                    dvDistance.innerHTML = "";
+                    dvDistance.innerHTML += "Distance: " + distance + "<br />";
+                    dvDistance.innerHTML += "Time:" + duration + " min";
+
+                } else {
+                    alert("Unable to find the distance via road.");
+                }
+            });
+        }
+
+    </script>
+    @Scripts.Render("~/bundles/jqueryval")
+}

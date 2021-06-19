@@ -1,0 +1,118 @@
+﻿@model Charity.ViewModels.UsersRolesViewModel
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<div class="panel panel-default" style="margin-top:20px;">
+    <div class="panel-body">
+        <div class="btn-group btn-group-justified" role="group" aria-label="...">
+            <div class="btn-group" role="group">
+                @Html.ActionLink("Add New Role", "AddNewRole", null, htmlAttributes: new { @class = "btn btn-success" })
+            </div>
+            <div class="btn-group" role="group">
+                @Html.ActionLink("Delete A Role", "DeleteRole", null, htmlAttributes: new { @class = "btn btn-danger" })
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="panel panel-default">
+    <!-- Default panel contents -->
+    <div class="panel-heading"><h4>Administrators</h4></div>
+
+    <table class="table table-bordered table-striped" style="color:#111;">
+        <tr>
+            <th>
+                @Html.Label("User Name")
+            </th>
+            <th>
+                @Html.Label("Roles")
+            </th>
+            <th>
+                @Html.Label("Control")
+            </th>
+        </tr>
+
+        @foreach (var Adminstrator in Model.Admins)
+        {
+            <tr>
+                <td>
+                    @Adminstrator.UserName
+                </td>
+                <td>
+                    Adminstrator
+                </td>
+                <td>
+                    @Html.ActionLink("More Details", "Details", new { id = Adminstrator.Id })
+                </td>
+            </tr>
+        }
+    </table>
+</div>
+
+<div class="panel panel-default">
+    <!-- Default panel contents -->
+    <div class="panel-heading"><h4>Donors</h4></div>
+
+    <table class="table table-bordered table-striped" style="color:#111;">
+        <tr>
+            <th>
+                @Html.Label("User Name")
+            </th>
+            <th>
+                @Html.Label("Roles")
+            </th>
+            <th>
+                @Html.Label("Control")
+            </th>
+        </tr>
+
+        @foreach (var Seller in Model.Donors)
+        {
+            <tr>
+                <td>
+                    @Seller.UserName
+                </td>
+                <td>
+                    Donor
+                </td>
+                <td>
+                    @Html.ActionLink("More Details", "Details", new { id = Seller.Id })
+                </td>
+            </tr>
+        }
+    </table>
+</div>
+<div class="panel panel-default">
+    <!-- Default panel contents -->
+    <div class="panel-heading"><h4>Organisation Representative</h4></div>
+
+    <table class="table table-bordered table-striped" style="color:#111;">
+        <tr>
+            <th>
+                @Html.Label("User Name")
+            </th>
+            <th>
+                @Html.Label("Roles")
+            </th>
+            <th>
+                @Html.Label("Control")
+            </th>
+        </tr>
+
+        @foreach (var Seller in Model.OrganisationRep)
+        {
+<tr>
+    <td>
+        @Seller.UserName
+    </td>
+    <td>
+        Representative
+    </td>
+    <td>
+        @Html.ActionLink("More Details", "Details", new { id = Seller.Id })
+    </td>
+</tr>}
+    </table>
+</div>

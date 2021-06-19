@@ -1,0 +1,74 @@
+﻿@model Charity.Models.Delivered
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Delivered</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.OrganisationId)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.OrganisationId)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Address)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Address)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Clothes)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Clothes)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Food)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Food)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.TotalQTY)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TotalQTY)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.image)
+        </dt>
+
+        <dd>
+            <img src="data:image/png;base64,@Convert.ToBase64String(Model.image, 0, Model.image.Length)" class="img-responsive img-thumbnail" style="width: 50px; height: 60px;" alt="" />
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.status)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.status)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.DeliveryID }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

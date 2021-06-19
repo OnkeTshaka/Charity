@@ -1,0 +1,97 @@
+﻿@model Charity.Models.Blog
+
+
+<div>
+    @{
+        ViewBag.Title = Model.Title;
+        var comments = (IEnumerable<Charity.Models.Comment>)ViewBag.Comments;
+        var ratingSum = ViewBag.RatingSum;
+        var ratingCount = ViewBag.RatingCount;
+
+        decimal rating = 0;
+        if (ratingCount > 0)
+        {
+            rating = (ratingSum / ratingCount);
+        }
+        var totalRating = decimal.Parse(rating.ToString());
+    }
+    <div class="row" style="margin-top:50px;margin-left:100px;">
+        <a href="@Url.Action("Index", "Home", new { id = Model.BlogId })">
+            <img src="~/Images/@Model.Picture" style="width:850px;height:300px" />
+            @*<img src="data:image/png;base64,@Convert.ToBase64String(Model.Picture, 0, Model.Picture.Length)" style="width:850px;height:300px" />*@
+        </a><br /><br />
+        <span style="font-size:15px;">
+            @Html.DisplayFor(model => model.OnCreated)
+        </span><br /><br />
+        <span style="font-weight:900;font-size:25px;">
+            @Html.DisplayFor(model => model.Title)
+        </span><br />
+
+        <br />
+        @if (Request.IsAuthenticated)
+        {
+            <div>
+                <span class="starFadeN" id="sRate1"></span><span class="starFadeN" id="sRate2"></span><span class="starFadeN" id="sRate3"></span><span class="starFadeN" id="sRate4"></span><span class="starFadeN" id="sRate5"></span>
+            </div><br />
+        }
+    <div style="font-weight:500;font-size:15px;width:850px;">
+        @Html.Raw(Model.Body)<br />
+            @Html.Partial("_CommentBox")
+
+    </div>
+    </div>
+</div>
+<br />
+
+
+
+
+
+@if (Model.AllowComments == true)
+{
+    <div class="panel panel-default" style="color:#111;width:850px;margin-left:100px;">
+        <div class="panel-heading">
+            <h3 class="panel-title">Comments</h3>
+        </div>
+        <div class="panel-body">
+            <div class="col-md-12 well">
+                @foreach (var c in comments)
+                {
+                    string ReviewerName = c.User.UserName;
+                    string ReviewerID = c.User.Id;
+                    <div class="row">
+                        <div class="col-md-12">
+                            <span>
+                                @*<a href="@Url.Action("Details", "Profile", new { area = "", id = ReviewerID })">*@
+                                @*<img src="~/Images/@c.User.ProfilePicture" style="border-radius:50%; width:70px;height:65px" />*@
+                                @*</a>*@
+
+                            </span>  @for (var i = 1; i <= c.Rating; i++)
+                            {
+                                <span class="starGlowN"></span>
+                            }
+                            @for (var i = (c.Rating + 1); i <= 5; i++)
+                            {
+                                <span class="starFadeN"></span>
+                            }
+                            <span class="pull-right"><b>@c.ThisDateTime</b></span>
+                            <p style="margin-left:50px;"> @Html.Raw(c.Comments.Replace("\n", "<br />"))</p>
+                        </div>
+
+                    </div>
+                    <hr>
+                }
+            </div>
+        </div>
+    </div>
+}
+<script>
+    function SCRate() {
+        for (var i = 1; i <= @totalRating; i++) {
+            $("#sRate" + i).attr('class', 'starGlowN');
+        }
+    }
+    $(function(){
+        SCRate();
+    });
+</script>

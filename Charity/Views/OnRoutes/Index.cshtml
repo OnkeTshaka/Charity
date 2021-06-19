@@ -1,0 +1,91 @@
+﻿@model IEnumerable<Charity.Models.OnRoute>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>List Of Packages OnRoute</h2>
+
+
+<table class="table table-hover table-striped table-responsive" id="my_list">
+    <thead>
+        <tr class="table-header-row">
+            <th>
+                @Html.DisplayNameFor(model => model.OrganisationId)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Address)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Clothes)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Food)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TotalQTY)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.image)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.status)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+
+        @foreach (var item in Model)
+        {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.OrganisationId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Address)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Clothes)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Food)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TotalQTY)
+            </td>
+            
+            <td>
+                <img src="data:image/png;base64,@Convert.ToBase64String(item.image, 0, item.image.Length)" class="img-responsive img-thumbnail" style="width: 50px; height: 60px;" alt="" />
+            </td>
+            
+            <td>
+                @Html.DisplayFor(modelItem => item.status)
+            </td>
+            <td>
+                <a href="@Url.Action("Delivered", "OnRoutes",new { id = item.DeliveryID })" onclick="return confirm('Change status to Arrired, click Ok to Confirm, Or Cancel');" rel="tooltip" title="Arrived" class="btn btn-danger btn-Charity btn-xs"><i class="glyphicon glyphicon-remove"></i></a>
+            </td>
+        </tr>
+        }
+    </tbody>
+</table>
+<script type="text/javascript">
+    $('#my_list').dataTable(
+        {
+            dom: 'Bfrtip',
+            lengthMenu: [
+                [10, 25, 50, -1],
+                ['10 rows', '25 rows', '50 rows', 'Show all']
+            ],
+            buttons: [
+                'pageLength', 'csv', 'pdf', 'print'
+            ],
+            language: { search: "" },
+            select: true
+        }
+    );
+    $(".dataTables_filter input").addClass("search-input");
+    $(".dataTables_filter input").attr('placeholder', 'Search');
+    $('#my_list')
+        .removeClass('display')
+        .addClass('table table-striped table-hover');</script>

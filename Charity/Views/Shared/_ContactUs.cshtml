@@ -1,0 +1,50 @@
+﻿@model Charity.ViewModels.CampaignViewModel
+
+<section id="contact" style="background-color:#111;">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 text-center">
+                <h2 class="section-heading" style="color:#fff;">Contact Us</h2>
+                <h3 class="section-subheading text-muted">Send all your messages and queries here.</h3><br />
+            </div>
+        </div>
+        <div class="row" style="width:100%;">
+            <div class="col-lg-12">
+
+                @using (Html.BeginForm("Contact", "Home"))
+                {
+                    @Html.AntiForgeryToken()
+                    <div class="row">
+                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                @Html.TextBoxFor(m => m.ContactUs.Name, new { @class = "form-control", placeholder = "Your Name *" })
+                                <p class="text-danger">@Html.ValidationMessageFor(m => m.ContactUs.Name, "", new { @class = "text-danger" })</p>
+                            </div>
+                            <div class="form-group">
+                                @Html.TextBoxFor(m => m.ContactUs.EmailAddress, new { @class = "form-control", placeholder = "Your Email Address *" })
+                                <p class="help-block text-danger">@Html.ValidationMessageFor(m => m.ContactUs.EmailAddress, "", new { @class = "text-danger" })</p>
+                            </div>
+                            <div class="form-group">
+                                @Html.TextBoxFor(m => m.ContactUs.PhoneNumber, new { @class = "form-control", placeholder = "Your Phone Number *" })
+                                <p class="help-block text-danger">@Html.ValidationMessageFor(m => m.ContactUs.PhoneNumber, "", new { @class = "text-danger" })</p>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                @Html.TextAreaFor(m => m.ContactUs.Message, new { @class = "form-control", placeholder = "Your Message *" })
+                                <p class="help-block text-danger">@Html.ValidationMessageFor(m => m.ContactUs.Message, "", new { @class = "text-danger" })</p>
+                            </div>
+                        </div>
+                        <div class="clearfix"></div>
+                        <div class="col-lg-12 text-center">
+                            <div id="success"></div>
+                            <button type="submit" class="btn btn" onclick="myFunction()" style="margin-bottom:15px;background-color:#ff5722;color:#fff;">Send Message</button><br />
+                        </div>
+                    </div>}
+
+
+            </div>
+        </div>
+    </div>
+</section>

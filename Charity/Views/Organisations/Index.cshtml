@@ -1,0 +1,81 @@
+﻿@model Charity.ViewModels.CampaignViewModel
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>List of Organisations</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @*@Html.DisplayNameFor(model => model.OrganisationName)*@
+            @Html.Label("Name")
+        </th>
+        <th>
+            @Html.Label("City")
+            @*@Html.DisplayNameFor(model => model.OrganisationCity)*@
+        </th>
+        <th>
+            @Html.Label("State")
+            @*@Html.DisplayNameFor(model => model.OrganisationState)*@
+        </th>
+        <th>
+            @Html.Label("Type")
+            @*@Html.DisplayNameFor(model => model.OrganisationType)*@
+        </th>
+        <th>
+            @Html.Label("Zip Code")
+            @*@Html.DisplayNameFor(model => model.OrganisationZipCode)*@
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model.Organisations) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.OrganisationName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.OrganisationCity)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.OrganisationState)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.OrganisationType)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.OrganisationZipCode)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.OrganisationId }) |
+            @Html.ActionLink("Details", "Details", new { id=item.OrganisationId }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.OrganisationId })
+        </td>
+    </tr>
+}
+
+</table>
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+        $(function () {
+            if ($("#message").html() != '') {
+                $("#message").addClass("alert alert-success text-center").show();
+
+                setTimeout(function () {
+
+                    $("#message").fadeOut("normal", function () {
+                        $(this).remove();
+                    });
+
+                }, 2000);
+            }
+        });
+
+    </script>
+
+}

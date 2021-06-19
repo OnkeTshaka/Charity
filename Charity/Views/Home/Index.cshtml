@@ -1,0 +1,209 @@
+﻿@using PagedList;
+@using PagedList.Mvc;
+@model Charity.ViewModels.CampaignViewModel
+@{ ViewBag.Title = "Home"; }
+<div id="message" class="mt-4">@TempData["message"]</div>
+@*//Partial View*@
+@Html.Action("List", "Home")
+<div class="container jumbotron" style="margin-right:50px;">
+    <div class="text-center">
+        <h3 class="title-big">Over 93% of all Donations go directly to Projects.</h3>
+        <p class="my-3">Under 7% for admin, fundraising, and salaries.</p>
+        <h4>Thank you for your continued Support </h4><br />
+        <a href="@Url.Action("Create","Payments")" class="btn btn-lg" style="background-color:#ff5722;color:#fff"><span class="glyphicon glyphicon-alert"></span> Donate Now</a>
+    </div>
+</div>
+@if (User.IsInRole("Admin"))
+{
+    <a href="@Url.Action("Create", "Home")" class="btn btn-default">Create</a>
+
+}
+
+<br />
+<h3 style="font-weight:900;text-align:center ">OUR PRIMARY CAMPAIGNS</h3>
+
+<div style="width:100%;margin-right:10px;">
+    <span>
+        @using (Html.BeginForm("Index", "Home", FormMethod.Get, htmlAttributes: new { @class = "form-inline my-2 my-lg-0" }))
+        {
+<button class="btn btn-outline-light my-2 my-sm-0 mr-5 pull-right" type="submit" style="color:#111;height:50px;">Search</button>
+
+                <input class="form-control mr-sm-2" type="search" id="search" name="searching" placeholder="Search Category..." aria-label="Search" style="float:right;margin-right:5px;width:500px;height:50px;" oninput="listSearchExamplesScript()"><br /><br /><br />}
+    </span>
+
+</div>
+<br />
+<br />
+<div class="row">
+    @foreach (var item in Model.Blog)
+    {
+<div class="col-sm-4 special_grid_col" style="border:thin cadetblue;width:232px;margin-top:20px;margin-bottom:30px;margin-left:20px;margin-right:20px;">
+    <div class="special_box">
+        <div class="panel-heading" style="background-color:#ff5722;color:#fff;text-transform:uppercase">@item.Title</div>
+        <a class="panel-body" href="@Url.Action("Details", "Home", new { id = item.BlogId })">
+            <img src="~/Images/@item.Picture" class="img-responsive img-thumbnail" style="width:400px; height: 250px;" alt="" />
+        </a>
+        <div class="panel-body">
+
+            <div class="caption">
+                <div>
+                    @if (User.IsInRole("Admin"))
+                    {
+    <span>
+        @Html.ActionLink("Edit", "Edit", new { id = item.BlogId }) |
+        @Html.ActionLink("Delete", "Delete", new { id = item.BlogId })
+    </span> } @*@("R"+item.Price)
+        </span> <span class="price-new">@("R"+item.GetDiscountedPrice())</span>
+        <span style="color:#ff0000">@("AVAL: "+item.Quantity)</span>*@
+                </div>
+                @*<p>
+                    @if (item.Quantity > 0)
+                    {
+                        using (Html.BeginForm("AddToCart", "ShoppingCart", new { productId = item.ProductID, url = "Index" }, FormMethod.Post))
+                        {
+                            <input type='submit' class='btn btn-success' onclick="myFunction()" value='Add to Cart'>
+                        }
+                    }
+                    else
+                    {
+                    <p style="color:#ff0000">Out of Stock</p>*@
+            </div>
+        </div>
+    </div>
+</div>}
+
+</div>
+@*<div class="container">
+        @foreach (var item in Model.Blog)
+        {
+            <div class="col-sm-4 special_grid_col container" style="border:thin cadetblue;width:500px;margin-left:20px">
+                <div class="panel-body">
+                    <a href="@Url.Action("Details", "Home", new { id = item.BlogId })">
+                        <img src="~/Images/@item.Picture" style="width:500px;height:300px" />
+                    </a>
+                    <h3>@Html.DisplayFor(modelItem => item.Title)</h3>
+
+                    <div class="caption" style="width:500px;">
+                        @Html.DisplayFor(modelItem => item.Intro)
+                        <hr>
+
+                        <p>
+                            <span class="badge badge-pill bg-secondary" style="background-color:orange">@Html.DisplayFor(modelItem => item.Category.Name)</span>
+                            Posted on <span class="badge" style="background-color:forestgreen">@Html.DisplayFor(modelItem => item.OnCreated)</span>
+                        </p>
+
+                        <hr>
+
+
+                    </div>
+                </div>
+            </div>
+        }
+    </div>*@
+
+<div class="text-center">
+    @Html.PagedListPager(Model.Blog, page => Url.Action("Index", new { page, search = Request.QueryString["search"], category = Request.QueryString["category"] }),
+                                                          new PagedListRenderOptions()
+                                                          {
+                                                              Display = PagedListDisplayMode.IfNeeded
+                                                          })
+</div>
+<section id="stats" class="stats">
+    <div class="container container--85">
+        <div class="stats--item col-md-6">
+            <em>@Model.Donors</em>
+            <h3>Our Generous Donors</h3>
+            <p>
+                A donation is a gift for charity, humanitarian aid or to benefit a cause.<br /> A donation may take up various forms,
+                including money,clothing toys, food etc.
+            </p>
+        </div>
+
+        <div class="stats--item col-md-6">
+            <em>@Model.Trainers</em>
+            <h3>Number of organisations</h3>
+            <p>A charity is an organization whose primary objectives are philanthropy<br /> and social well-being (e.g educational, religious or other activities serving the public interest or common good.</p>
+        </div>
+    </div>
+</section>
+
+
+<style>
+    img {
+        -webkit-transition-duration: 0.5s;
+        -moz-transition-duration: 0.5s;
+        -o-transition-duration: 0.5s;
+    }
+
+    .panel-body:hover img {
+        -webkit-transform: scale(0.9);
+        -moz-transform: scale(0.9);
+        -o-transform: scale(0.9);
+        opacity: 1;
+    }
+
+    .stats {
+        background-color:#fff;
+    }
+
+        /* line 4, scss/modules/_stats.scss */
+        .stats .container {
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: flex;
+            padding: 50px;
+        }
+
+    /* line 9, scss/modules/_stats.scss */
+    .stats--item {
+        text-align: center;
+        padding: 0 2vw;
+    }
+
+        /* line 13, scss/modules/_stats.scss */
+        .stats--item em {
+            font-family: 'Open Sans', sans-serif;
+            font-weight: 300;
+            font-style: normal;
+            font-size: 5.5rem;
+            font-style: normal;
+        }
+
+        /* line 19, scss/modules/_stats.scss */
+        .stats--item h3 {
+            font-size: 1.8rem;
+            text-transform: uppercase;
+            margin: 2em 0;
+        }
+
+        /* line 25, scss/modules/_stats.scss */
+        .stats--item p {
+            font-family: 'Merriweather', serif;
+            font-weight: 300;
+            font-style: normal;
+            font-size: 1.6rem;
+        }
+</style>
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+        $(function () {
+            if ($("#message").html() != '') {
+                $("#message").addClass("alert alert-success text-center").show();
+
+                setTimeout(function () {
+
+                    $("#message").fadeOut("normal", function () {
+                        $(this).remove();
+                    });
+
+                }, 2000);
+            }
+        });
+
+    </script>
+
+}
+
+
+

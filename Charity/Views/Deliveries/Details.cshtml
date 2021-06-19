@@ -1,0 +1,172 @@
+﻿@model Charity.Models.Delivery
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Delivery</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.OrganisationId)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.OrganisationId)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Address)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Address)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Clothes)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Clothes)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Food)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Food)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.TotalQTY)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TotalQTY)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.image)
+        </dt>
+
+        <dd>
+            <img src="data:image/png;base64,@Convert.ToBase64String(Model.image, 0, Model.image.Length)" class="img-responsive img-thumbnail" style="width: 50px; height: 60px;" alt="" />
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.status)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.status)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.DeliveryID }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
+<div class="row jumbotron" style="color:#111">
+    <div class="col-md-12">
+        <h2 class="text-center" style="font-weight:900">Get Directions</h2>
+        <a href="@Url.Action("Index", "DeliveryReturns")" class="btn btn-warning pull-right" style="margin-left:0;">
+            Back To Delivery
+        </a>
+        <div>
+            <form>
+                <div class="form-group">
+                    <label>Travel From :</label>
+                    <input id="travelfrom" type="text" name="name" value="@Model.PickUpAddress" class="form-control" disabled="disabled" />
+                </div>
+                <div class="form-group">
+                    <label>To :</label>
+                    <input id="travelto" type="text" name="name" value="@Model.Address" class="form-control" disabled="disabled" />
+                </div>
+                <input type="button" value="Get Route" onclick="GetRoute()" id="btnSave" style="color:#111;" />
+
+            </form>
+            <br />
+            <div>
+                <div id="dvDistance" style="font-size:30px;">
+                </div>
+            </div>
+
+        </div>
+
+        <div id="dvMap" style="min-height:500px"></div>
+
+    </div>
+</div>
+<script src="https://maps.googleapis.com/maps/api/js?libraries=places&key=AIzaSyBYttF7QzFTT7iNnEjSNifWl0mVX_ahIQ4" type="text/javascript"></script>
+
+<!-- code for example 1 -->
+<script>
+
+    var source, destination;
+    var directionsDisplay;
+    var directionsService = new google.maps.DirectionsService();
+
+    // initialise the location of the map on Chichester in England (ref lat and lng)
+    var map = new google.maps.Map(document.getElementById('dvMap'), {
+        center: { lat: -29.856349, lng: 31.003004 },
+        zoom: 13,
+        mapTypeId: 'roadmap'
+    });
+
+    google.maps.event.addDomListener(window, 'load', function () {
+        new google.maps.places.SearchBox(document.getElementById('travelfrom'));
+        new google.maps.places.SearchBox(document.getElementById('travelto'));
+        directionsDisplay = new google.maps.DirectionsRenderer({ 'draggable': true });
+    });
+
+    function GetRoute() {
+
+        directionsDisplay.setMap(map);
+
+        source = document.getElementById("travelfrom").value;
+        destination = document.getElementById("travelto").value;
+
+        var request = {
+            origin: source,
+            destination: destination,
+            travelMode: google.maps.TravelMode.DRIVING
+        };
+
+        directionsService.route(request, function (response, status) {
+            if (status == google.maps.DirectionsStatus.OK) {
+                directionsDisplay.setDirections(response);
+            }
+        });
+
+        //*********DISTANCE AND DURATION**********************//
+        var service = new google.maps.DistanceMatrixService();
+        service.getDistanceMatrix({
+            origins: [source],
+            destinations: [destination],
+            travelMode: google.maps.TravelMode.DRIVING,
+            unitSystem: google.maps.UnitSystem.METRIC,
+            avoidHighways: false,
+            avoidTolls: false
+        }, function (response, status) {
+
+            if (status == google.maps.DistanceMatrixStatus.OK && response.rows[0].elements[0].status != "ZERO_RESULTS") {
+                var distance = response.rows[0].elements[0].distance.text;
+                var duration = response.rows[0].elements[0].duration.value;
+                var dvDistance = document.getElementById("dvDistance");
+                duration = parseFloat(duration / 60).toFixed(2);
+                dvDistance.innerHTML = "";
+                dvDistance.innerHTML += "Distance: " + distance + "<br />";
+                dvDistance.innerHTML += "Time:" + duration + " min";
+
+            } else {
+                alert("Unable to find the distance via road.");
+            }
+        });
+    }
+
+</script>

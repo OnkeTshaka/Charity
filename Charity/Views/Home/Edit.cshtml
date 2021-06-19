@@ -1,0 +1,96 @@
+﻿@model Charity.Models.Blog
+
+@{
+    ViewBag.Title = "Edit";
+}
+@section Head {
+    <link href="~/Scripts/summernote/summernote-bs4.css" rel="stylesheet" />
+}
+@using (Html.BeginForm("Edit", "Home", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+    <div style="display:inline-block">
+        <h2>Edit blog post details</h2><sub>(back to blog post list)</sub>
+
+    </div>
+    <div class="btn-group pull-right" style="margin-top:30px;">
+        <input type="submit" value="Submit" class="btn btn-success" />
+        <a href="@Url.Action("Delete", "Home",new { Id = Model.BlogId})" class="btn btn-danger">Delete</a>
+        <a href="@Url.Action("Index", "Home")" class="btn btn-primary">Back</a>
+    </div>
+    <div class="form-horizontal">
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.BlogId)
+        @Html.HiddenFor(model => model.CategoryId)
+        <div class="form-group">
+            @Html.LabelFor(model => model.Title, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Title, new { htmlAttributes = new { @class = "form-control", @placeholder = "Title..." } })
+                @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Intro, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Intro, new { htmlAttributes = new { @class = "form-control", @placeholder = "Intro..." } })
+                @Html.ValidationMessageFor(model => model.Intro, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Body, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextAreaFor(model => model.Body, htmlAttributes: new { @class = "form-control", @id = "Entry_Content" })
+                @Html.ValidationMessageFor(model => model.Body, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.Picture, new { @class = "col-md-2 control-label" })
+            <div class="col-md-10">
+                <input type="file" name="image" />
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.AllowComments, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <div class="checkbox">
+                    @Html.EditorFor(model => model.AllowComments)
+                    @Html.ValidationMessageFor(model => model.AllowComments, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+
+        @*<div class="form-group">
+                @Html.LabelFor(model => model.CategoryId, "Category", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.DropDownListFor(m => m.Category.CategoryId, new SelectList(, "CategoryId", "Name"), "Select Category", new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.CategoryId, "", new { @class = "text-danger" })
+                </div>
+            </div>*@
+
+        @*<div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </div>*@
+    </div>
+}
+
+@*<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>*@
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+
+    <script src="~/Scripts/summernote/summernote-bs4.js"></script>
+    <script src="~/Scripts/summernote/summernote.min.js"></script>
+    <script>
+        $('#Entry_Content').summernote({
+            height: 300
+        });</script>
+}
+

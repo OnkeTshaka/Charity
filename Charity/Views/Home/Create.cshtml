@@ -1,0 +1,93 @@
+﻿@model Charity.Models.Blog
+
+@{
+    ViewBag.Title = "Create";
+}
+@section Head {
+    <link href="~/Scripts/summernote/summernote-bs4.css" rel="stylesheet" />
+}
+
+
+
+@using (Html.BeginForm("Create", "Home", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{ 
+
+   @Html.AntiForgeryToken()
+  
+<div class="form-horizontal">
+    <div style="display:inline-block">
+        <h2>Add a new blog post</h2><sub>(back to blog post list)</sub>
+
+    </div>
+    <div class="btn-group pull-right" style="margin-top:30px;">
+        <input type="submit" value="Submit" class="btn btn-success" />
+        <a href="@Url.Action("Index", "Home")" class="btn btn-primary">Back</a>
+
+    </div>
+    <hr />
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    <div class="form-group">
+        @Html.LabelFor(model => model.Title, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.Title, new { htmlAttributes = new { @class = "form-control", @placeholder = "Title..." } })
+            <p class="text-danger">@Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })</p>
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.Intro, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-12" style="width:400px">
+            @Html.EditorFor(model => model.Intro, new { htmlAttributes = new { @class = "form-control", @placeholder = "Enter Your Introducation..." } })
+            @Html.ValidationMessageFor(model => model.Intro, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Body, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.TextAreaFor(model => model.Body, htmlAttributes: new { @class = "form-control", @id = "Entry_Content", @placeholder = "Enter Your Article..." })
+            @Html.ValidationMessageFor(model => model.Body, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.Picture, new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            <input type="file" name="image" />
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.AllowComments, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            <div class="checkbox">
+                @Html.EditorFor(model => model.AllowComments)
+                @Html.ValidationMessageFor(model => model.AllowComments, "", new { @class = "text-danger" })
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.CategoryId, "Category", htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.DropDownList("CategoryId", null, htmlAttributes: new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.CategoryId, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    @*<div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Save" class="btn btn-success" />
+            </div>
+        </div>*@
+</div>
+}
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+
+    <script src="~/Scripts/summernote/summernote-bs4.js"></script>
+    <script src="~/Scripts/summernote/summernote.min.js"></script>
+    <script>
+        $('#Entry_Content').summernote({
+            height: 300
+        });</script>
+}

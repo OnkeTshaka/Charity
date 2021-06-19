@@ -1,0 +1,25 @@
+﻿@model Charity.Models.Payment
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2 class="text-success" style="font-weight:900">Confirm Donation</h2>
+<br>
+<div class="form-group">
+    @Html.LabelFor(model => model.Amount, htmlAttributes: new { @class = "control-label col-md-2" })
+    <div class="col-md-10">
+        @Html.DisplayFor(model => model.Amount, new { htmlAttributes = new { @class = "form-control", @placeholder = "10..." } })
+        @Html.ValidationMessageFor(model => model.Amount, "", new { @class = "text-danger" })
+    </div>
+</div>
+<br />
+<a href="https://www.payfast.co.za/eng/process?cmd=_paynow&amp;receiver=17601730&amp;item_name=Donation&amp;item_description=Donoting+funds+for+donation&amp;amount=10000.00"><img src="https://www.payfast.co.za/images/buttons/dark-small-paynow.png" width="165" height="36" alt="Pay" title="Pay Now with PayFast" /></a>
+
+@{
+    string url = "https://www.sandbox.paypal.com/cgi-bin/webscr?cmd=_xclick&amount=" + (Model.Amount / 16.43) + "&business=Shakampechuar@gmail.com&item_name=Payments&return=https://goodwillDonation.azurewebsites.net/Blogs/Index";
+
+}
+
+<a href="@url" class="btn btn-success">Pay Using PayPal</a>
