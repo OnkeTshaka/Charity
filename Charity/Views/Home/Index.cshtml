@@ -4,21 +4,15 @@
 @{ ViewBag.Title = "Home"; }
 <div id="message" class="mt-4">@TempData["message"]</div>
 @*//Partial View*@
-@Html.Action("List", "Home")
-<div class="container jumbotron" style="margin-right:50px;">
+@Html.Action("List", "Home")<br /><hr />
+<div class="container jumbotron" style="width:100%">
     <div class="text-center">
         <h3 class="title-big">Over 93% of all Donations go directly to Projects.</h3>
         <p class="my-3">Under 7% for admin, fundraising, and salaries.</p>
         <h4>Thank you for your continued Support </h4><br />
-        <a href="@Url.Action("Create","Payments")" class="btn btn-lg" style="background-color:#ff5722;color:#fff"><span class="glyphicon glyphicon-alert"></span> Donate Now</a>
+        <a href="@Url.Action("Create","Payments")" class="btn btn-lg" style="background-color:#ff5722;color:#fff"><span class="glyphicon glyphicon-heart"></span> Donate Now</a>
     </div>
 </div>
-@if (User.IsInRole("Admin"))
-{
-    <a href="@Url.Action("Create", "Home")" class="btn btn-default">Create</a>
-
-}
-
 <br />
 <h3 style="font-weight:900;text-align:center ">OUR PRIMARY CAMPAIGNS</h3>
 
@@ -73,33 +67,7 @@
 </div>}
 
 </div>
-@*<div class="container">
-        @foreach (var item in Model.Blog)
-        {
-            <div class="col-sm-4 special_grid_col container" style="border:thin cadetblue;width:500px;margin-left:20px">
-                <div class="panel-body">
-                    <a href="@Url.Action("Details", "Home", new { id = item.BlogId })">
-                        <img src="~/Images/@item.Picture" style="width:500px;height:300px" />
-                    </a>
-                    <h3>@Html.DisplayFor(modelItem => item.Title)</h3>
 
-                    <div class="caption" style="width:500px;">
-                        @Html.DisplayFor(modelItem => item.Intro)
-                        <hr>
-
-                        <p>
-                            <span class="badge badge-pill bg-secondary" style="background-color:orange">@Html.DisplayFor(modelItem => item.Category.Name)</span>
-                            Posted on <span class="badge" style="background-color:forestgreen">@Html.DisplayFor(modelItem => item.OnCreated)</span>
-                        </p>
-
-                        <hr>
-
-
-                    </div>
-                </div>
-            </div>
-        }
-    </div>*@
 
 <div class="text-center">
     @Html.PagedListPager(Model.Blog, page => Url.Action("Index", new { page, search = Request.QueryString["search"], category = Request.QueryString["category"] }),
@@ -108,6 +76,7 @@
                                                               Display = PagedListDisplayMode.IfNeeded
                                                           })
 </div>
+@Html.Partial("_ContactUs")
 <section id="stats" class="stats">
     <div class="container container--85">
         <div class="stats--item col-md-6">
@@ -126,7 +95,7 @@
         </div>
     </div>
 </section>
-
+@*@Html.Partial("_ContactUs")*@
 
 <style>
     img {

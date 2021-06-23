@@ -9,15 +9,18 @@
 @using (Html.BeginForm("Create", "Deliveries", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
     @Html.AntiForgeryToken()
-    <div class="btn-group pull-right" style="margin-top:30px;">
-        <input type="submit" value="Submit" class="btn btn-success" />
-        <a href="@Url.Action("Index", "Deliveries")" class="btn btn-primary">Back</a>
-
+    <div style="display:inline-block">
+        <h2>Delivery of Goods</h2><sub>(back to list)</sub>
+        <div id="dvMap" style="min-height:1px;width:1px;"></div>
+       
     </div>
-    <div class="form-horizontal">
-        <h2>Delivery of Goods</h2>
+    <div class="btn-group pull-right" style="margin-top:30px;">
+        <input type="submit" value="Submit" class="btn btn-primary" />
+        <a href="@Url.Action("Index", "Deliveries")" class="btn btn-primary">Return</a>
+    </div>
 
         <hr />
+    <div class="form-horizontal">
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         <div class="form-group">
             @Html.LabelFor(model => model.OrganisationId, "Donation Group Name", htmlAttributes: new { @class = "control-label col-md-2" })
@@ -90,18 +93,18 @@
                 </div>
             </div>*@
 
-        <div class="form-group">
+        @*<div class="form-group">
             <div class="col-md-offset-2 col-md-10">
                 <input type="submit" value="Create" class="btn btn-default" />
-                <div id="dvMap" style="min-height:1px;width:1px;"></div>
+                
             </div>
-        </div>
+        </div>*@
     </div>
 }
 
-<div>
+@*<div>
     @Html.ActionLink("Back to List", "Index")
-</div>
+</div>*@
 <div class="col-md-6">
     <div class="col-md-6">
         <img id="image_preview" src="#" alt="" />

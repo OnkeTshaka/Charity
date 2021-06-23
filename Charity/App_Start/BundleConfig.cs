@@ -20,13 +20,13 @@ namespace Charity
                         "~/Scripts/js/modernizr-2.6.2.min.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(               
-                "~/Scripts/js/bootstrap.min.js",
-                      "~/Scripts/js/respond.min.js"));
+                "~/Scripts/bootstrap.min.js",
+                      "~/Scripts/respond.min.js"));
 
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
 
-                      "~/Content/css/bootstrap.css",
+                      "~/Content/bootstrap.css",
                       "~/Content/css/style.css"));
         }
     }

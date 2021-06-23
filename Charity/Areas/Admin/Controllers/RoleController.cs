@@ -9,7 +9,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 
-namespace Charity.Controllers.Admin
+namespace Charity.Areas.Admin.Controllers
 {
     public class RoleController : Controller
     {
