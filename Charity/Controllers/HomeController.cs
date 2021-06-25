@@ -1,4 +1,5 @@
 ﻿using Charity.Models;
+using Charity.Repository;
 using Charity.ViewModels;
 using PagedList;
 using System;
@@ -14,9 +15,16 @@ namespace Charity.Controllers
     public class HomeController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
+
+        IRepositoryBase<Blog> Dune;
+        public HomeController()
+        {
+            //Create Repositories for DataAccess
+            Dune = new BlogRepository(db);
+        }
         public ActionResult Index(string searching, int? page)
         {
-            var blogs = db.Blogs.OrderByDescending(x => x.BlogId).Where(m => m.Title.Contains(searching) || m.Category.Name.Contains(searching) || searching == null).ToList().ToPagedList(page ?? 1, 5);
+            var blogs = Dune.GetAll().OrderByDescending(x => x.BlogId).Where(m => m.Title.Contains(searching) || m.Category.Name.Contains(searching) || searching == null).ToList().ToPagedList(page ?? 1, 4);
             CampaignViewModel campaign = new CampaignViewModel
             {
                 Blog = (PagedList<Blog>)blogs,
@@ -28,7 +36,7 @@ namespace Charity.Controllers
         public PartialViewResult List()
         {
 
-            return PartialView(db.Blogs.OrderByDescending(x => x.BlogId).ToList());
+            return PartialView(Dune.GetAll().OrderByDescending(x => x.BlogId).ToList());
         }
         // GET: Blogs/Details/5
         public ActionResult Details(int? id)
@@ -37,7 +45,7 @@ namespace Charity.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Blog blog = db.Blogs.Find(id);
+            Blog blog = Dune.GetByID(id);
             if (blog == null)
             {
                 return HttpNotFound();
@@ -90,8 +98,11 @@ namespace Charity.Controllers
             if (ModelState.IsValid)
             {
                 blog.OnCreated = DateTime.Now.ToLongDateString();
-                db.Blogs.Add(blog);
-                db.SaveChanges();
+                //db.Blogs.Add(blog);
+                //db.SaveChanges();
+                //Now Add this ad object in our Ads Repository
+                Dune.Insert(blog);
+                Dune.Commit();
                 return RedirectToAction("Index","Home");
             }
             ViewBag.CategoryId = new SelectList(db.Categories, "CategoryId", "Name", blog.CategoryId);
@@ -105,7 +116,7 @@ namespace Charity.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Blog blog = db.Blogs.Find(id);
+            Blog blog = Dune.GetByID(id);
             if (blog == null)
             {
                 return HttpNotFound();
@@ -126,7 +137,7 @@ namespace Charity.Controllers
 
                 if (blog.BlogId != 0)
                 {
-                    Blog tripInDB = db.Blogs.Single(c => c.BlogId == blog.BlogId);
+                    Blog tripInDB = Dune.GetAll().Single(c => c.BlogId == blog.BlogId);
                     if (image != null)
                     {
                         string path = Path.Combine(Server.MapPath("~/Images"), (image.FileName));
@@ -142,7 +153,9 @@ namespace Charity.Controllers
                     tripInDB.OnCreated = blog.OnCreated;
                     tripInDB.CategoryId = blog.CategoryId;
 
-                    db.SaveChanges();
+                    //db.SaveChanges();
+                    //Now Add this ad object in our Ads Repository
+                    Dune.Commit();
                     return RedirectToAction("Index");
 
                 }
@@ -157,7 +170,7 @@ namespace Charity.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Blog blog = db.Blogs.Find(id);
+            Blog blog = Dune.GetByID(id);
             if (blog == null)
             {
                 return HttpNotFound();
@@ -170,9 +183,11 @@ namespace Charity.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Blog blog = db.Blogs.Find(id);
-            db.Blogs.Remove(blog);
-            db.SaveChanges();
+            Blog blog = Dune.GetByID(id);
+            //db.Blogs.Remove(blog);
+            //db.SaveChanges();
+            Dune.Delete(blog);
+            Dune.Commit();
             return RedirectToAction("Index");
         }
         public ActionResult Contact()

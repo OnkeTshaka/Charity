@@ -31,40 +31,50 @@
 <div class="row">
     @foreach (var item in Model.Blog)
     {
-<div class="col-sm-4 special_grid_col" style="border:thin cadetblue;width:232px;margin-top:20px;margin-bottom:30px;margin-left:20px;margin-right:20px;">
-    <div class="special_box">
-        <div class="panel-heading" style="background-color:#ff5722;color:#fff;text-transform:uppercase">@item.Title</div>
-        <a class="panel-body" href="@Url.Action("Details", "Home", new { id = item.BlogId })">
-            <img src="~/Images/@item.Picture" class="img-responsive img-thumbnail" style="width:400px; height: 250px;" alt="" />
-        </a>
-        <div class="panel-body">
-
-            <div class="caption">
-                <div>
-                    @if (User.IsInRole("Admin"))
-                    {
-    <span>
-        @Html.ActionLink("Edit", "Edit", new { id = item.BlogId }) |
-        @Html.ActionLink("Delete", "Delete", new { id = item.BlogId })
-    </span> } @*@("R"+item.Price)
-        </span> <span class="price-new">@("R"+item.GetDiscountedPrice())</span>
-        <span style="color:#ff0000">@("AVAL: "+item.Quantity)</span>*@
-                </div>
-                @*<p>
-                    @if (item.Quantity > 0)
-                    {
-                        using (Html.BeginForm("AddToCart", "ShoppingCart", new { productId = item.ProductID, url = "Index" }, FormMethod.Post))
+        <div class="col-md-6">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <div class="col-md-5" style="padding-right:0 !important;">
+                        <img class="img-dimention img-thumbnail" src="~/Images/@item.Picture" alt="@*@movie.Title*@" style="width:200px;height:200px;"/>
+                    </div>
+                    <div class="col-md-7">
+                        <h4 style="font-family: 'Bowlby One SC', cursive;">@item.Title</h4>
+                        <span><span class="label label-default">@*@movie.ReleaseDate.Year*@</span></span>
+                        <span class="label label-default">@*@movie.Duration.Minute min*@</span>
+                        <h5><strong class="text-primary">Category: </strong>@item.Category.Name</h5>
+                        <h5><strong class="text-primary">Description: </strong></h5>
+                        <p class="text-muted limitText" style="text-align:justify">
+                            @item.Intro
+                        </p>
+                        <a href="@Url.Action("Details", "Home", new { id = item.BlogId })" class="pull-right">Read more ></a>
+                        @if (User.IsInRole("Admin"))
                         {
-                            <input type='submit' class='btn btn-success' onclick="myFunction()" value='Add to Cart'>
-                        }
-                    }
-                    else
-                    {
-                    <p style="color:#ff0000">Out of Stock</p>*@
+                            <span>
+                                @Html.ActionLink("Edit", "Edit", new { id = item.BlogId }) |
+                                @Html.ActionLink("Delete", "Delete", new { id = item.BlogId })
+                            </span> }
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
-</div>}
+@*<div class="col-sm-4 special_grid_col" style="border:thin cadetblue;width:232px;margin-top:20px;margin-bottom:30px;margin-left:20px;margin-right:20px;">
+<div class="special_box">
+<div class="panel-heading" style="background-color:#ff5722;color:#fff;text-transform:uppercase">@item.Title</div>
+<a class="panel-body" href="@Url.Action("Details", "Home", new { id = item.BlogId })">
+<img src="~/Images/@item.Picture" class="img-responsive img-thumbnail" style="width:400px; height: 250px;" alt="" />
+</a>
+<div class="panel-body">
+
+<div class="caption">
+<div>
+
+</div>
+              
+</div>
+</div>
+</div>
+</div>*@
+}
 
 </div>
 
